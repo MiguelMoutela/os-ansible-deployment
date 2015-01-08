@@ -13,25 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: horizon_all[0]
-  user: root
-  roles:
-    - horizon_common
-    - galera_db_setup
-    - horizon_setup
-    - horizon_heat_store
-    - horizon_apache
-  vars_files:
-    - vars/openstack_service_vars/horizon.yml
-    - vars/repo_packages/horizon.yml
+- name: Clone Heat store repo
+  git:
+    repo: "{{ heat_store_git_repo }}"
+    dest: /opt/rackspace/heat_store/
+    version: "{{ heat_store_git_install_branch }}"
 
-- hosts: horizon_all:!horizon_all[0]
-  user: root
-  roles:
-    - horizon_common
-    - horizon_heat_store
-    - horizon_apache
-  vars_files:
-    - vars/openstack_service_vars/horizon.yml
-    - vars/repo_packages/horizon.yml
-    - vars/repo_packages/horizon_heat_store.yml
+- name: Install python dependencies
+  pip:
+    requirements: "{{ heat_store_pip_requirements_file }}"
+
+- name: Generate Horizon config
+  template:
+    src: _50_rackspace.cfg
+    dest: {{ install_lib_dir }}/openstack_dashboard/local/enabled/_50_rackspace.cfg
+    mode: 0600
+    owner: root
+    group: root

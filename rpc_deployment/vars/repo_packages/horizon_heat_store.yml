@@ -13,25 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: horizon_all[0]
-  user: root
-  roles:
-    - horizon_common
-    - galera_db_setup
-    - horizon_setup
-    - horizon_heat_store
-    - horizon_apache
-  vars_files:
-    - vars/openstack_service_vars/horizon.yml
-    - vars/repo_packages/horizon.yml
+heat_store_git_repo: https://github.com/miguelgrinberg/heat_store.git
+heat_store_git_install_branch: master
 
-- hosts: horizon_all:!horizon_all[0]
-  user: root
-  roles:
-    - horizon_common
-    - horizon_heat_store
-    - horizon_apache
-  vars_files:
-    - vars/openstack_service_vars/horizon.yml
-    - vars/repo_packages/horizon.yml
-    - vars/repo_packages/horizon_heat_store.yml
+heat_store_pip_requirements_file: "/opt/rackspace/heat_store/requirements.txt"
