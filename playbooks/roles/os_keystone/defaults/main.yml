@@ -144,6 +144,14 @@ keystone_ldap_domain_config_dir: /etc/keystone/domains
 #  identity:create_region: "rule:admin_required"
 #  identity:update_region: "rule:admin_required"
 
+## Federation
+keystone_idp:
+  certfile: /etc/ssl/certs/signing_cert.pem
+  keyfile: /etc/ssl/private/signing_key.pem
+  idp_entity_id: "{{ keystone_service_publicurl_v3 }}/OS-FEDERATION/saml2/idp"
+  idp_sso_endpoint: "{{ keystone_service_publicurl_v3 }}/OS-FEDERATION/saml2/sso"
+  idp_metadata_path: /etc/keystone/saml2_idp_metadata.xml
+
 # Common apt packages
 keystone_apt_packages:
   - apache2
@@ -158,6 +166,7 @@ keystone_apt_packages:
   - libldap2-dev
   - libsasl2-dev
   - libxslt1.1
+  - xmlsec1
 
 # Common pip packages
 keystone_pip_packages:
