@@ -32,7 +32,7 @@ keystone_system_user_home: "/var/lib/{{ keystone_system_user_name }}"
 keystone_rpc_backend: rabbit
 
 ## Drivers
-keystone_auth_methods: "password,token"
+keystone_auth_methods: "password,token,saml2"
 keystone_identity_driver: "keystone.identity.backends.sql.Identity"
 # For a sql backed token storage use: "keystone.token.backends.sql.Token"
 keystone_token_driver: "keystone.token.persistence.backends.memcache.Token"
@@ -145,12 +145,21 @@ keystone_ldap_domain_config_dir: /etc/keystone/domains
 #  identity:update_region: "rule:admin_required"
 
 ## Federation
-keystone_idp:
-  certfile: /etc/ssl/certs/signing_cert.pem
-  keyfile: /etc/ssl/private/signing_key.pem
-  idp_entity_id: "{{ keystone_service_publicurl_v3 }}/OS-FEDERATION/saml2/idp"
-  idp_sso_endpoint: "{{ keystone_service_publicurl_v3 }}/OS-FEDERATION/saml2/sso"
-  idp_metadata_path: /etc/keystone/saml2_idp_metadata.xml
+#
+# Enable the following section on the Keystone IdP
+#keystone_idp:
+#  certfile: /etc/ssl/certs/signing_cert.pem
+#  keyfile: /etc/ssl/private/signing_key.pem
+#  idp_entity_id: "{{ keystone_service_publicurl_v3 }}/OS-FEDERATION/saml2/idp"
+#  idp_sso_endpoint: "{{ keystone_service_publicurl_v3 }}/OS-FEDERATION/saml2/sso"
+#  idp_metadata_path: /etc/keystone/saml2_idp_metadata.xml
+#
+# Enable the following section on the Keystone SP
+#keystone_service_idp_publicurl_v3: "https://<keystone.idp>:5000/v3"
+#keystone_sp:
+#  idp_entity_id: "{{ keystone_service_idp_publicurl_v3 }}/OS-FEDERATION/saml2/idp"
+#  idp_metadata_provider: "{{ keystone_service_idp_publicurl_v3 }}/OS-FEDERATION/saml2/metadata"
+
 
 # Common apt packages
 keystone_apt_packages:
@@ -167,6 +176,7 @@ keystone_apt_packages:
   - libsasl2-dev
   - libxslt1.1
   - xmlsec1
+  - libapache2-mod-shib2
 
 # Common pip packages
 keystone_pip_packages:
