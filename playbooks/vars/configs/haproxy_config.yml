@@ -65,24 +65,6 @@ haproxy_service_configs:
        - "httpchk"
        - "httplog"
   - service:
-      haproxy_service_name: keystone_admin
-      haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
-      haproxy_port: 35357
-      haproxy_balance_type: http
-      haproxy_backend_options:
-       - "forwardfor"
-       - "httpchk"
-       - "httplog"
-  - service:
-      haproxy_service_name: keystone_service
-      haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
-      haproxy_port: 5000
-      haproxy_balance_type: http
-      haproxy_backend_options:
-       - "forwardfor"
-       - "httpchk"
-       - "httplog"
-  - service:
       haproxy_service_name: neutron_server
       haproxy_backend_nodes: "{{ groups['neutron_server'] }}"
       haproxy_port: 9696
@@ -154,3 +136,39 @@ haproxy_service_configs:
       haproxy_port: 8181
       haproxy_backend_port: 8181
       haproxy_balance_type: http
+
+haproxy_keystone_service_configs:
+  - service:
+      haproxy_service_name: keystone_admin
+      haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
+      haproxy_port: 35357
+      haproxy_balance_type: http
+      haproxy_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
+  - service:
+      haproxy_service_name: keystone_service
+      haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
+      haproxy_port: 5000
+      haproxy_balance_type: http
+      haproxy_backend_options:
+       - "forwardfor"
+       - "httpchk"
+       - "httplog"
+
+haproxy_keystone_ssl_service_configs:
+  - service:
+      haproxy_service_name: keystone_admin
+      haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
+      haproxy_port: 35357
+      haproxy_balance_type: tcp
+      haproxy_backend_options:
+       - "ssl-hello-chk"
+  - service:
+      haproxy_service_name: keystone_service
+      haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
+      haproxy_port: 5000
+      haproxy_balance_type: tcp
+      haproxy_backend_options:
+       - "ssl-hello-chk"

@@ -31,3 +31,25 @@
   notify: Restart haproxy
   tags:
     - haproxy-service-config
+
+- name: "Create haproxy keystone service config files"
+  template:
+    src: service.j2
+    dest: "/etc/haproxy/conf.d/{{ item.service.haproxy_service_name }}"
+  with_items: haproxy_keystone_service_configs
+  when: >
+    keystone_ssl_enabled != true and keystone_ssl_enabled != "True"
+  notify: Restart haproxy
+  tags:
+    - haproxy-service-config
+
+- name: "Create haproxy keystone SSL service config files"
+  template:
+    src: service.j2
+    dest: "/etc/haproxy/conf.d/{{ item.service.haproxy_service_name }}"
+  with_items: haproxy_keystone_ssl_service_configs
+  when: >
+    keystone_ssl_enabled == true or keystone_ssl_enabled == "True"
+  notify: Restart haproxy
+  tags:
+    - haproxy-service-config

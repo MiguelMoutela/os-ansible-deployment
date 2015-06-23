@@ -43,3 +43,6 @@ haproxy_backup_nodes: []
 #         - "httplog"
 
 galera_monitoring_user: monitoring
+
+# Keystone configuration
+keystone_ssl_enabled: false

@@ -26,6 +26,20 @@
   when: >
     inventory_hostname == groups['keystone_all'][0]
 
+- include: keystone_ssl_self_signed.yml
+  when: >
+    (keystone_ssl_enabled == true or
+     keystone_ssl_enabled == "True") and
+    (keystone_self_signed == true or
+     keystone_self_signed == "True")
+
+- include: keystone_ssl_user_provided.yml
+  when: >
+    (keystone_ssl_enabled == true or
+     keystone_ssl_enabled == "True") and
+    (keystone_self_signed == false or
+     keystone_self_signed == "False")
+
 - include: keystone_apache.yml
 - include: keystone_token_cleanup.yml
 

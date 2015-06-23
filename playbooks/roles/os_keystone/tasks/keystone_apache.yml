@@ -36,6 +36,17 @@
   tags:
     - keystone-httpd
 
+- name: Enable apache2 modules
+  apache2_module:
+    state: "{{ item.state }}"
+    name: "{{ item.name }}"
+  with_items:
+    - { state: present, name: ssl }
+  notify: Restart Apache
+  tags:
+    - keystone-httpd
+    - keystone-httpd-modules
+
 - name: Enabled keystone vhost
   file:
     src: "{{ item.src }}"
