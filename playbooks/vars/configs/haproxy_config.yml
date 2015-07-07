@@ -68,6 +68,7 @@ haproxy_service_configs:
       haproxy_service_name: keystone_admin
       haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
       haproxy_port: 35357
+      haproxy_ssl: "{% if keystone_service_adminuri_proto == 'https' %}true{% else %}false{% endif %}"
       haproxy_balance_type: http
       haproxy_backend_options:
        - "forwardfor"
@@ -77,6 +78,7 @@ haproxy_service_configs:
       haproxy_service_name: keystone_service
       haproxy_backend_nodes: "{{ groups['keystone_all'] }}"
       haproxy_port: 5000
+      haproxy_ssl: "{% if keystone_service_publicuri_proto == 'https' %}true{% else %}false{% endif %}"
       haproxy_balance_type: http
       haproxy_backend_options:
        - "forwardfor"
